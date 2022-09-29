@@ -77,11 +77,6 @@ internal final class LocationProducer: LocationProducerProtocol {
                 return
             }
             if isUpdating {
-                /// Get permissions if needed
-                if mayRequestWhenInUseAuthorization,
-                   locationProvider.authorizationStatus == .notDetermined {
-                    locationProvider.requestWhenInUseAuthorization()
-                }
                 locationProvider.startUpdatingLocation()
                 locationProvider.startUpdatingHeading()
             } else {
