@@ -82,7 +82,7 @@ open class MapView: UIView {
     internal private(set) var resourceOptions: ResourceOptions!
 
     private var needsDisplayRefresh: Bool = false
-    private var displayLink: DisplayLinkProtocol?
+    public var displayLink: DisplayLinkProtocol?
 
     /// Holding onto this value that comes from `MapOptions` since there is a race condition between
     /// getting a `MetalView`, and intializing a `MapView`
@@ -568,7 +568,7 @@ open class MapView: UIView {
             return
         }
 
-//        updateHeadingOrientationIfNeeded()
+        updateHeadingOrientationIfNeeded()
 
         for participant in displayLinkParticipants.allObjects {
             participant.participate()
