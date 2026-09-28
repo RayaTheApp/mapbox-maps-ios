@@ -56,6 +56,24 @@ class SizeTrackingLayer: CALayer {
                             Expected size: \(bounds.size)
                             Actual size: \(self.bounds.size)
                         """, category: .sizeTrackingLayer)
+
+                    // The captured size was superseded, so this completion has no say in the final size. It
+                    // still has to hand one over: a resize that animates pre-grows the drawable to the larger
+                    // of the two sizes, and only a completion brings it back down. Another completion may
+                    // never come, because CATransaction keeps one block per transaction.
+                    Log.debug("""
+                        Reconciling bounds resize completion of \(self) to the current bounds.
+                            Layer: \(self)
+                            Old size: \(oldValue.size)
+                            New size: \(self.bounds.size)
+                        """, category: .sizeTrackingLayer)
+
+                    self.sizeTrackingDelegate?.sizeTrackingLayer(
+                        layer: self,
+                        completeResizingFrom: oldValue.size,
+                        to: self.bounds.size)
+
+                    self.sizeAnimationIsActive = false
                     return
                 }
 
