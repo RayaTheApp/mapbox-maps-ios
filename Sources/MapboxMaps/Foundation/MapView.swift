@@ -733,8 +733,10 @@ open class MapView: UIView, SizeTrackingLayerDelegate {
     // MARK: SizeTrackingLayerDelegate
 
     func sizeTrackingLayer(layer: SizeTrackingLayer, willAnimateResizingFrom from: CGSize, to: CGSize) {
-        updateDrawableSize(to: CGSize(width: max(from.width, to.width),
-                                  height: max(from.height, to.height)))
+        // The map takes the target size at once, so projections match the view from the first frame of the resize.
+        // A larger interim size would keep the old width through a narrowing resize, such as an iPhone Duo fold, and
+        // shift every projected coordinate until the animation completes.
+        updateDrawableSize(to: to)
     }
     func sizeTrackingLayer(layer: SizeTrackingLayer, completeResizingFrom: CGSize, to: CGSize) {
         updateDrawableSize(to: to)
